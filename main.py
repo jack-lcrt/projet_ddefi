@@ -9,8 +9,9 @@ import pickle
 import PyPDF2 as pdf
 from nltk.tokenize import RegexpTokenizer
 from nltk import Text
+
 #input pdf
-pdf_name='../Bilan d_entreprises/Airbus Annual Report 2019.pdf'
+pdf_name="C:/Users/jacqu/Documents/DDEFI/Projet WeFinn/Bilan d_entreprises/Airbus Annual Report 2019.pdf"
 
 
 file = open(pdf_name,'rb')
@@ -38,11 +39,11 @@ for i in sol:
   
 
 LR=pickle.load(open('LR_CO2.sav', 'rb'))
-Vectorizer=pickle.load(open('vector.pickel', 'rb'))
+Vectorizer=pickle.load(open('vectorizer.pkl', 'rb'))
 vec_sentence=Vectorizer.transform(sentence)
 
 label=LR.predict(vec_sentence)
-info=[sentence[i] for i in range(len(sentence)) if vec_sentence[i]>0]
+info=[sentence[i] for i in range(len(sentence)) if int(label[i])>0]
 print(info)
         
 
