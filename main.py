@@ -3,8 +3,16 @@
 Created on Wed Jan  6 15:26:19 2021
 
 @author: jacqu
+
+run this before executing:
+pip install PyPDF2
+pip install pdf2image
+conda install -c conda-forge poppler
+(or apt-get install -y poppler-utils) 
 """
 
+
+from pdf2image import convert_from_path
 import pickle
 import PyPDF2 as pdf
 from nltk.tokenize import RegexpTokenizer
@@ -22,6 +30,8 @@ tokenizer = RegexpTokenizer(r'\w+')
 keyword='co'
 page=[]
 sol=[]
+
+
 for i in range(pdf_reader.getNumPages()):
   raw=pdf_reader.getPage(i).extractText()
   token=tokenizer.tokenize(raw)
@@ -44,6 +54,11 @@ vec_sentence=Vectorizer.transform(sentence)
 
 label=LR.predict(vec_sentence)
 info=[sentence[i] for i in range(len(sentence)) if int(label[i])>0]
+page_info=[page[i] for i in range(len(sentence)) if int(label[i])>0]
+
+for i in list(set(page_info)):
+    img=convert_from_path(pdf_name, first_page=i, last_page = i)[0]
+    img.save(str(i)+'.jpg','JPEG')
 print(info)
-        
+
 
